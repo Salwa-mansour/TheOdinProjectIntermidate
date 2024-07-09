@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        function Book(title,author,pages,read){
+            this.title = title;
+            this.author = author;
+            this.pages = pages;
+            this.read = read;
+            this.info = function(){
+             let haveToRead = this.read ? "Must Read" :"Optional Reading";
+               return `${this.title}, by ${this.author}, ${this.pages} pages , ${
+                haveToRead}`;
+            }
+
+        }
+        let TheDip = new Book('The Dip','joan Doe',300,true) ;
+        console.log(TheDip.info())
+        console.dir(Object.getPrototypeOf(TheDip))
+        console.log(Object.getPrototypeOf(TheDip)===TheDip.prototype)
+    </script>   
+</body>
+</html>
