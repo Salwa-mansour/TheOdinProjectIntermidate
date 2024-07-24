@@ -1,3 +1,8 @@
+const startBtn = document.querySelector('.controles button');
+const boardCells = document.querySelectorAll('.game table td');
+const overlay = document.querySelector('.game .overlay');
+const showResult = overlay.querySelector('p');
+
 function createPlyer(name,sign){
     return {
         name,
@@ -8,7 +13,7 @@ const gameboard =(()=>{
     let gameBoard=['','','','','','','','',''];
 
     const render =()=>{
-        //generate html
+        //generate html complete
         console.log(gameBoard);
     }
 
@@ -19,10 +24,7 @@ const gameboard =(()=>{
 })();
 
 const game =(function gameController(){
-    let players = [
-     createPlyer(prompt('enter X player name'),"x"),   
-     createPlyer(prompt('enter Y player name'),"y")   
-    ];
+  
     const WINNING_COMBINATIONS = [
         [0, 1, 2],
         [3, 4, 5],
@@ -33,22 +35,38 @@ const game =(function gameController(){
         [0, 4, 8],
         [2, 4, 6]
       ]
-    let gameOver=false;
+    let gameOver=true;
     let Xturn = true;
+    let players;
+   function start(){
 
-    const start = ()=>{
-       while(!gameOver){
-        currentPlayer = Xturn? players[0]:players[1]
-        playTurn(currentPlayer);
-        Xturn = !Xturn;
-       }
+        const player1Sign="x";
+        const player2Sign="o";
+         players = [
+         createPlyer(document.querySelector('.player-1 .name').innerText,player1Sign),   
+         createPlyer(document.querySelector('.player-2 .name').innerText,player2Sign)   
+        ];
+        gameOver =false;
+        gameReset();
+     
+        overlay.classList.add('hide');
+      // while(!gameOver){
+        // currentPlayer = Xturn? players[0]:players[1]
+        // playTurn(currentPlayer);
+        // Xturn = !Xturn;
+    //   }
+       
     }
-
-    function playTurn(player){
-        let index;
-        index = prompt(`enter game bord postions for ${player.name}`)
+    function playTurn(e){
+        if(gameOver) return;
+        let index = e.target.dataset.index;
+        player = Xturn? players[0]:players[1];
+    
+        console.log(`${e.target.matches('td')} ${ e.target.innerText.match("")} ${ gameboard.gameBoard[index-1].match("")}`)
+        if(e.target.matches('td') && e.target.innerText.match("") && gameboard.gameBoard[index-1].match("") ){
+        
         gameboard.gameBoard[index-1] = player.sign;
-         gameboard.render();
+         e.target.innerText = player.sign
          //using if statment when calling checkwin
          if(checkWin()){
             gameOver = true;
@@ -59,6 +77,9 @@ const game =(function gameController(){
             finishGame();
             console.log('we have tie')
          }
+        }
+        Xturn = !Xturn;
+        showCurrentPlayer();
     }
     function checkWin(){
      //   let winnerSign;
@@ -82,23 +103,57 @@ const game =(function gameController(){
      return gameboard.gameBoard.every(item=> item !=="");
    }
    function finishGame(result=""){
-  
+    let winner;
+        overlay.classList.remove('hide');
+        startBtn.innerText = 'Restart';
         if(result){
             console.dir(result)
-            const winner = players.find((player) => player.sign ===result)
+             winner = players.find((player) => player.sign ===result)
             console.log({winner})
+           
+            showResult.innerText = `${winner.name} is the winner !`
         }else{
             console.log('no winner//tie')
+            showResult.innerText = 'no winner//tie';
         }
-
-   
+        if(winner.sign==="x"){
+            document.querySelector('.player-1').classList.add('winner');
+            document.querySelector('.player-2').classList.add('loser');
+        }else{
+            document.querySelector('.player-2').classList.add('winner');
+            document.querySelector('.player-1').classList.add('loser');
+        }
+        gameOver=true;
+   }
+   function gameReset(){
+   gameboard.gameBoard = gameboard.gameBoard.map(item => item = '');
+    console.log(gameboard.gameBoard)
+    boardCells.forEach(cell=>cell.innerText='');
+    document.querySelector('.player-1').classList.remove('winner');
+    document.querySelector('.player-2').classList.remove('loser');
+    document.querySelector('.player-2').classList.remove('winner');
+    document.querySelector('.player-1').classList.remove('loser');
+   }
+   function showCurrentPlayer(){
+        if(Xturn){
+            document.querySelector(`.player-1 .arrow`).classList.remove('hide') ;   
+            document.querySelector(`.player-2 .arrow`).classList.add('hide') ;
+            // document.documentElement.style.setProperty(`--current-player`,"X");
+            }else{
+            document.querySelector(`.player-2 .arrow`).classList.remove('hide');
+            document.querySelector(`.player-1 .arrow`).classList.add('hide');
+            // document.documentElement.style.setProperty(`--current-player`,"O");
+        }
    }
     return {
-        start
+        start,playTurn
     }
 })();
-
-game.start();
+startBtn.addEventListener('click',game.start);
+boardCells.forEach(cell=>cell.addEventListener('click', game.playTurn,{
+    once:false,
+}));
+// console.log(startBtn)
 // const arr=[]
 // console.dir(Array.prototype)
 // function takeChoeis(){

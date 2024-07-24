@@ -7,7 +7,47 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    
+    <div class="page">
+       
+            <section class="player-1">
+                <p class="name" contentEditable >player-1</p>
+                <img src="../../images/controlPanel/fox.png" alt="" width="100">
+                <p class="arrow " >🔽</p>
+            </section>
+            <section class="player-2">
+                <p class="name" contentEditable >player-2</p>
+                <img src="../../images/controlPanel/cool.png" alt="" width="100">
+                <p class="arrow hide" >🔽</p>
+            </section>
+   
+        <div class="game">
+            <table>
+                <tr>
+                    <td data-index="1"></td>
+                    <td data-index="2"></td>
+                    <td data-index="3"></td>
+                </tr>
+                <tr>
+                    <td data-index="4"></td>
+                    <td data-index="5"></td>
+                    <td data-index="6"></td>
+                </tr>
+                <tr>
+                    <td data-index="7"></td>
+                    <td data-index="8"></td>
+                    <td data-index="9"></td>
+                </tr>
+            </table>
+            <div class="overlay">
+                <p class="result"></p>
+                <div class="controles">
+                    <button>start</button>
+                </div>
+            </div>
+        </div>
+        
+      
+    </div>
 
     <script src="./script.js"></script>
 </body>
