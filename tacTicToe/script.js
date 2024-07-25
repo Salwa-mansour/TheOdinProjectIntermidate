@@ -1,7 +1,11 @@
-const startBtn = document.querySelector('.controles button');
-const boardCells = document.querySelectorAll('.game table td');
-const overlay = document.querySelector('.game .overlay');
+const gameContainer = document.querySelector('.game-container')
+const startBtn = gameContainer.querySelector('.controles button');
+const boardCells = gameContainer.querySelectorAll('.game table td');
+const overlay = gameContainer.querySelector('.game .overlay');
+const playerX = gameContainer.querySelector('.player-x');
+const playerO = gameContainer.querySelector('.player-o');
 const showResult = overlay.querySelector('p');
+
 
 function createPlyer(name,sign){
     return {
@@ -40,11 +44,11 @@ const game =(function gameController(){
     let players;
    function start(){
 
-        const player1Sign="x";
-        const player2Sign="o";
+        const playerXSign="x";
+        const playerOSign="o";
          players = [
-         createPlyer(document.querySelector('.player-1 .name').innerText,player1Sign),   
-         createPlyer(document.querySelector('.player-2 .name').innerText,player2Sign)   
+         createPlyer(document.querySelector('.player-x .name').innerText,playerXSign),   
+         createPlyer(document.querySelector('.player-o .name').innerText,playerOSign)   
         ];
         gameOver =false;
         gameReset();
@@ -117,11 +121,11 @@ const game =(function gameController(){
             showResult.innerText = 'no winner//tie';
         }
         if(winner.sign==="x"){
-            document.querySelector('.player-1').classList.add('winner');
-            document.querySelector('.player-2').classList.add('loser');
+            playerX.classList.add('winner');
+            playerO.classList.add('loser');
         }else{
-            document.querySelector('.player-2').classList.add('winner');
-            document.querySelector('.player-1').classList.add('loser');
+            playerO.classList.add('winner');
+            playerX.classList.add('loser');
         }
         gameOver=true;
    }
@@ -129,20 +133,22 @@ const game =(function gameController(){
    gameboard.gameBoard = gameboard.gameBoard.map(item => item = '');
     console.log(gameboard.gameBoard)
     boardCells.forEach(cell=>cell.innerText='');
-    document.querySelector('.player-1').classList.remove('winner');
-    document.querySelector('.player-2').classList.remove('loser');
-    document.querySelector('.player-2').classList.remove('winner');
-    document.querySelector('.player-1').classList.remove('loser');
+    playerX.classList.remove('winner');
+    playerO.classList.remove('loser');
+    playerO.classList.remove('winner');
+    playerX.classList.remove('loser');
    }
    function showCurrentPlayer(){
+    // console.log(playerX.querySelector(".arrow"), playerO.querySelector(".arrow"))
         if(Xturn){
-            document.querySelector(`.player-1 .arrow`).classList.remove('hide') ;   
-            document.querySelector(`.player-2 .arrow`).classList.add('hide') ;
-            // document.documentElement.style.setProperty(`--current-player`,"X");
+            console.log('x turn')
+            playerX.querySelector(".arrow").classList.remove('hide') ;    
+            playerO.querySelector(".arrow").classList.add('hide') ;
             }else{
-            document.querySelector(`.player-2 .arrow`).classList.remove('hide');
-            document.querySelector(`.player-1 .arrow`).classList.add('hide');
-            // document.documentElement.style.setProperty(`--current-player`,"O");
+                console.log('o turn')
+            playerX.querySelector(".arrow").classList.add('hide');
+            playerO.querySelector(".arrow").classList.remove('hide');
+              
         }
    }
     return {
